@@ -6,6 +6,10 @@ Actualizar documentos Word conservando el contenido válido y aplicando de forma
 
 ## Reglas obligatorias
 
+### Regla de arranque
+
+Este archivo es un registro histórico para mantenimiento humano; no es una fuente que el agente deba consultar durante una actualización. El agente debe aplicar las reglas incorporadas en su propio `.agent.md`, usando únicamente el documento objetivo y `Plantilla.docx` y `Manual Usuario Nuevo.docx` como referencias documentales autorizadas. Antes de generar una versión debe elaborar una matriz de aceptación: contenido conservado, estructura, geometría, escala tipográfica, fuentes, anchos de tabla, secciones, recursos usados, densidad por página y evidencia visual necesaria.
+
 1. **Crear siempre una nueva versión**
    - Nunca sobrescribir el documento original.
    - Nunca modificar `Plantilla.docx` ni las referencias visuales.
@@ -68,10 +72,30 @@ Actualizar documentos Word conservando el contenido válido y aplicando de forma
 7. Renderizar o abrir con Word cuando sea posible y corregir los problemas visuales.
 8. Eliminar auxiliares y entregar la ruta de la nueva versión.
 
+## Aprendizajes de la comparación Mac vs PC
+
+- No basta con copiar los estilos de la plantilla. `Title`, `Heading1` y `Heading2` pueden tener tamaños pensados para un manual y resultar desproporcionados en un informe corto. Medir y adaptar la escala antes de generar.
+- La tabla debe calcularse con el ancho útil de la página: ancho de papel menos márgenes izquierdo y derecho. Si la suma de columnas lo supera, Word recorta o desborda el contenido.
+- No usar saltos de sección para separar capítulos si no cambia la configuración de página, encabezado o pie. Un `sectPr` adicional puede crear una página vacía; mantener los saltos internos justificados y un único `sectPr` final.
+- Un informe comparativo necesita una composición editorial propia: título contenido, resumen inicial, bloques de decisión y una tabla legible. Una sucesión de encabezados heredados de un manual produce páginas vacías y poca densidad informativa.
+- La validación XML demuestra integridad técnica, no calidad visual. Renderizar antes de entregar y revisar la primera página, tablas, páginas vacías, fuentes, colores y saltos.
+- Si no hay herramienta de renderizado, declararlo expresamente y no afirmar que el documento está visualmente validado. Una captura del usuario debe tratarse como evidencia de regresión y orientar una corrección causal.
+
+## Auditoría de las cinco versiones del informe
+
+- El original tenía una sola sección, una tabla y el contenido completo del informe.
+- v2 trasladó el contenido a la plantilla, pero heredó tamaños de manual sin medirlos, definió una tabla de 8400 dxa cuando el ancho útil era 6520 dxa y añadió tres saltos de sección internos además del `sectPr` final. Resultado: títulos sobredimensionados, tabla recortada y página vacía.
+- v3 solo redujo tamaños tipográficos. No reparó el ancho de tabla ni la estructura de secciones; demuestra que una corrección cosmética no sustituye al diagnóstico estructural.
+- v4 corrigió el ancho de tabla a 6520 dxa y dejó dos saltos internos más un `sectPr` final. La reparación eliminó la causa de la página vacía.
+- v5 añadió un resumen visual Mac/PC para dar densidad editorial y acercar el informe a la plantilla, conservando los conceptos del original y sin residuos del manual de referencia.
+- Las cinco versiones conservaron los conceptos principales del original y no arrastraron términos de Nóvaris, vacaciones, solicitud y aprobación ni permisos y registro. Esta comprobación debe repetirse como comparación completa, no solo como búsqueda de frases.
+- La secuencia de cinco versiones se produjo porque el agente validó primero la integridad XML y solo después reaccionó a capturas visuales. Regla: definir antes de generar la matriz de aceptación y no cerrar una tarea visual sin render o captura revisada.
+- v2 y v5 conservaron ocho recursos multimedia de la plantilla aunque `document.xml` no referenciaba ninguna imagen. Regla: al construir desde un paquete base, limpiar medios y relaciones no utilizados, salvo que formen parte de cabeceras, pies o recursos requeridos.
+
 ## Criterio de decisión
 
 Si hay que elegir entre conservar exactamente el formato original o aplicar la identidad visual de la plantilla, aplicar la plantilla. La adaptación debe afectar al texto y a la estructura necesaria, no inventar información. Si la transformación directa es técnicamente frágil, reconstruir el documento desde la plantilla y trasladar únicamente el contenido validado.
 
 ## Texto breve para pegar en un chat nuevo
 
-Actúa como agente especializado en documentación Word. Aprende de estos errores: crea siempre una nueva versión y nunca sobrescribas el original ni la plantilla; usa la plantilla como base visual real, no solo sus estilos; conserva y adapta el contenido del documento objetivo sin mezclar contenido de otros manuales; elimina todos los residuos textuales del documento de referencia; preserva namespaces, relaciones, imágenes, cabeceras, pies, tablas y secciones del DOCX; valida no solo el ZIP/XML sino también la compatibilidad con Word y la representación visual cuando sea posible; comprueba títulos, tablas, imágenes, leyendas, fuentes, colores, saltos y páginas vacías; si una versión falla, genera la siguiente versión; y comunica con precisión qué se verificó y qué limitaciones quedan.
+Actúa como agente especializado en documentación Word. Lee primero `Aprendizajes_actualizador_documentacion.md`, la plantilla autorizada y el documento objetivo completo. Antes de editar, define una matriz de aceptación con contenido, estructura, geometría, escala tipográfica, fuentes, ancho útil de tablas, secciones, recursos y evidencia visual. Crea una única versión candidata, nunca sobrescribas el original ni la plantilla, y no uses v2-v5 como base de un documento nuevo. Usa la plantilla como base visual real, conserva y adapta el contenido sin mezclar manuales, elimina residuos, limpia recursos y relaciones no utilizados, preserva namespaces, relaciones, imágenes, cabeceras, pies, tablas y secciones, y compara el candidato con el original completo. No heredes tamaños de título sin medirlos, no superes el ancho útil de página y no uses saltos de sección para separar capítulos sin una razón real. Valida ZIP/XML, relaciones, contenido, geometría y paginación; renderiza o revisa una captura antes de cerrar. Si no hay evidencia visual, marca el archivo como candidato técnico y no como entrega final. Comunica con precisión qué se verificó y qué limitaciones quedan.
